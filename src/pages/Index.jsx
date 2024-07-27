@@ -34,47 +34,48 @@ const Index = () => {
       <div className="container mx-auto p-4">
         <h1 className="text-4xl font-bold mb-6 text-center text-orange-500">Top 100 Hacker News Stories</h1>
         <div className="mb-6 max-w-md mx-auto">
-        <Input
-          type="text"
-          placeholder="Search stories..."
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          className="w-full bg-gray-800 text-gray-100 border-gray-700 focus:border-orange-500"
-        />
+          <Input
+            type="text"
+            placeholder="Search stories..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="w-full bg-gray-800 text-gray-100 border-gray-700 focus:border-orange-500"
+          />
+        </div>
+        {loading ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {[...Array(9)].map((_, index) => (
+              <Card key={index} className="w-full h-40 animate-pulse bg-gray-800 border-gray-700">
+                <CardContent className="h-full bg-gray-700"></CardContent>
+              </Card>
+            ))}
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {filteredStories.map((story) => (
+              <Card key={story.objectID} className="bg-gray-800 border-gray-700 hover:border-orange-500 transition-colors duration-300">
+                <CardHeader>
+                  <CardTitle className="text-lg text-orange-400">{story.title}</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="flex items-center text-sm text-gray-400 mb-4">
+                    <ArrowUpCircle className="w-4 h-4 mr-2 text-orange-500" />
+                    <span>{story.points} points</span>
+                  </div>
+                  <Button
+                    variant="outline"
+                    onClick={() => window.open(story.url, '_blank')}
+                    className="w-full bg-gray-700 text-orange-400 hover:bg-orange-500 hover:text-gray-900 transition-colors duration-300"
+                  >
+                    <ExternalLink className="w-4 h-4 mr-2" />
+                    Read More
+                  </Button>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        )}
       </div>
-      {loading ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {[...Array(9)].map((_, index) => (
-            <Card key={index} className="w-full h-40 animate-pulse bg-gray-800 border-gray-700">
-              <CardContent className="h-full bg-gray-700"></CardContent>
-            </Card>
-          ))}
-        </div>
-      ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredStories.map((story) => (
-            <Card key={story.objectID} className="bg-gray-800 border-gray-700 hover:border-orange-500 transition-colors duration-300">
-              <CardHeader>
-                <CardTitle className="text-lg text-orange-400">{story.title}</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="flex items-center text-sm text-gray-400 mb-4">
-                  <ArrowUpCircle className="w-4 h-4 mr-2 text-orange-500" />
-                  <span>{story.points} points</span>
-                </div>
-                <Button
-                  variant="outline"
-                  onClick={() => window.open(story.url, '_blank')}
-                  className="w-full bg-gray-700 text-orange-400 hover:bg-orange-500 hover:text-gray-900 transition-colors duration-300"
-                >
-                  <ExternalLink className="w-4 h-4 mr-2" />
-                  Read More
-                </Button>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
-      )}
     </div>
   );
 };
